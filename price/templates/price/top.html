@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+<body>
+   
+    <nav class="navbar navbar-dark bg-dark">
+        <a href="#" class="navbar-brand">課題管理</a>
+    </nav> 
+
+        <div class="form-group">
+        <form method="POST" action="{% url 'add_task' %}" autocomplete="off" style="margin: 10px 0px 10px 10px">
+            {% csrf_token %}
+
+            <div>
+                <label>課題名</label>
+            {{ form.task }}
+            </div>
+            <div>
+                <label>提出期限</label>
+                {{ form.deadline }}
+            </div>
+            <input type="submit" value="submit" class="btn btn-primary">
+        </form>
+        </div>
+        <script>
+            $(function() {
+                let dateFormat = 'yy-mm-dd';
+              $("#id_deadline").datepicker({
+                  dateFormat: dateFormat,
+              });
+            });
+        </script>
+        
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>課題</th>
+                <th>提出期限<span> <a href="{% url 'sort' %}">⇅</a></span></th> 
+                <th>終了チェック</th>  
+            </tr>
+            </thead>
+            {% for form in forms %}
+            <div class="container-fluid">
+                    <tr>   
+                    <td>{{ form.task }}</td>
+                    <td>{{ form.deadline}}</td> 
+                    <td><a class="btn btn-dark" href="{% url 'delete' form.id %}" role="button">課題終了</a></td>
+                    </tr>
+            </div>
+            {% endfor %}
+        </table>
+  
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+</html>
